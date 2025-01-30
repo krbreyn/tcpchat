@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-
-	"github.com/krbreyn/must"
 )
 
 // todo - grab and print local ip on startup so you know what to connect to. also say 'localhost' for clarity
@@ -19,13 +17,19 @@ func main() {
 	deadClients := make(chan net.Conn)
 	msgs := make(chan string)
 
-	server := must.Must1(net.Listen("tcp", ":23"))
+	server, err := net.Listen("tcp", ":23")
+	if err != nil {
+		panic(err)
+	}
 
 	// accept connections
 	go func() {
 		for {
 			// TODO just handle and print to console
-			conn := must.Must1(server.Accept())
+			conn, err := server.Accept()
+			if err != nil {
+				panic(err)
+			}
 			newClients <- conn
 		}
 	}()
