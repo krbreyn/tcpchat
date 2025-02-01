@@ -43,7 +43,7 @@ func main() {
 		select {
 		// new clients
 		case conn := <-newClients:
-			log.Printf("accepted %d", numClients)
+			log.Printf("accepted client %d", numClients)
 			clients[conn] = numClients
 			numClients++
 
