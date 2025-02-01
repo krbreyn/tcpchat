@@ -17,10 +17,14 @@ func main() {
 	deadClients := make(chan net.Conn)
 	msgs := make(chan string)
 
-	server, err := net.Listen("tcp", ":23")
+	port := ":23"
+
+	server, err := net.Listen("tcp", port)
 	if err != nil {
 		panic(err)
 	}
+
+	fmt.Printf("running on %s", port)
 
 	// accept connections
 	go func() {
@@ -59,7 +63,7 @@ func main() {
 
 		// dead clients
 		case conn := <-deadClients:
-			log.Printf("disconnected %v", clients[conn])
+			log.Printf("disconnected client %v", clients[conn])
 			delete(clients, conn)
 
 		// handle messages
