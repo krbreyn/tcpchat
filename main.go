@@ -92,6 +92,7 @@ func msgHandler(in chan Message, up chan Message) {
 			go sendMessages(up, msg.Txt)
 
 		case DeadClient:
+			msg.Conn.Close()
 			delete(conns, msg.Conn)
 			go sendMessages(up, msg.Txt)
 
